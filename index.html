@@ -1,77 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Candy Sweet Game</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Commission Calculator</title>
+
+  <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
-    <div class="container">
-        <div class="popup-wrapper">
-        </div>
-            <div class="popup-contact-form">
-                <i class="close-button fa-solid fa-xmark"></i>
-                <h1 class="popup-title">SWEET!</h1>
-                <form action="otp-verification.html" method="GET">
-                    <p>Enter your mobile number to receive a PIN and start your sweet journey!</p>
-                    <input id="telnum" class="input_telnum" type="tel" name="mobile" placeholder="Contact Number" required>
-                    <button type="submit">GET OTP</button>
-                 </form>
-            </div>
-        <header>
-           <nav>
-            <div class="navbar-img">
-                <img src="imgs/blast_crush_game_studio_logo.jpeg" alt="">
-            </div>
-            <div class="navbar-links">
-                <ul>
-                    <li><a href="">Our studio</a></li>
-                    <li><a href="">Data Safety</a></li>
-                    <li><a href="">About This Game</a></li>
-                </ul>
-            </div>
-            <div class="navbar-button">
-                <button>SIGN UP</button>
-                <i class="dropdown fa-solid fa-square-caret-down"></i>
-                <i></i>
-            </div>
-           </nav>
-        </header>
-        <main>
-            <section class="hero">
-                <div class="hero-title"> 
-                    <p class="game-title">Candy Sweet Garden</p>
-                    <h1>Sweet Adventure</h1>
-                    <p>Join thousands of players in the most 
-                        delightful and addictive puzzle game. Match candies, solve puzzles, 
-                        and enjoy sweet rewards!</p>
-                    <div class="hero-button">
-                        <button>PLAY NOW</button>
-                    </div>
-                </div>
-                <div class="hero-img">
-                    <img src="imgs/hero-img.png" alt="">
-                </div>
-            </section>
-        </main>
-        <footer>
-            <div class="badge-wrapper">
-                <ul class="badge-container">
-                    <li>
-                        <img src="imgs/GetItOnGooglePlay_Badge_Web_color_English.png" 
-                        alt="googleplay">
-                    </li>
-                    <li>
-                        <img src="imgs/appstore.webp"
-                        alt="googleplay">
-                    </li>
-                </ul>
-            </div>
-            <p class="copyright">&copy; 2024 Candy Sweet Garden. All rights reserved.</p>
-        </footer>
+
+  <div class="container">
+
+  <div class="logo-container">
+
+    <img
+      src="imgs/Asset 4.svg"
+      alt="Logo"
+      class="logo"
+    />
+
+  </div>
+
+    <h1>Commission Calculator</h1>
+
+    <!-- Product -->
+    <div class="form-group">
+      <label for="product">Search Product</label>
+
+    <input
+      type="text"
+      id="product"
+      list="productList"
+      placeholder="Search product..."
+      autocomplete="off"
+    />
+
+    <datalist id="productList"></datalist>
     </div>
-    <script src="index.js"></script>
+
+    <!-- Payment Mode -->
+    <div class="form-group">
+      <label for="payment">Mode of Payment</label>
+
+      <select id="payment">
+        <option value="">Choose Payment Mode</option>
+        <option value="Cash">Cash</option>
+        <option value="Card Transaction">Card Transaction</option>
+        <option value="Financing">Financing</option>
+      </select>
+    </div>
+
+    <!-- PRICE ROW -->
+    <div class="price-row">
+
+      <!-- Selling Price -->
+      <div class="price-box">
+
+        <label>Selling Price</label>
+
+        <div
+          id="price"
+          class="price-text">
+          ₱0.00
+        </div>
+
+      </div>
+
+      <!-- Discount Threshold -->
+      <div class="price-box">
+
+        <label>Discount Threshold</label>
+
+        <div
+          id="discountThreshold"
+          class="price-text">
+          ₱0.00
+        </div>
+
+      </div>
+
+    </div>
+
+        <!-- Sold Price -->
+    <div class="form-group">
+      <label for="sold_price">Sold Price</label>
+
+      <input
+        type="text"
+        id="sold_price"
+        placeholder="Enter sold price"
+      />
+      <small
+        id="priceError"
+        class="error-message">
+      </small>
+    </div>
+
+
+    <!-- Button -->
+    <button id="computeBtn">
+      Compute Commission
+    </button>
+
+    <!-- Result -->
+    <div class="result">
+      <p><strong>GP:</strong> <span id="grossProfit"></span></p>
+      <p><strong>Commission Rate:</strong> <span id="commissionRate"></span></p>
+      <p><strong>Commission:</strong> <span id="commission">₱0.00</span></p>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+
 </body>
 </html>
