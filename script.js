@@ -693,7 +693,7 @@ document
     const sellprice =
       Number(
         sellingPrice.innerText
-          .replace(/,/g, "")
+          .replace(/[₱,]/g, "")
       );
 
     const soldPrice =
