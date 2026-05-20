@@ -21,6 +21,11 @@ const dropdown =
     "productDropdown"
   );
 
+const loadingScreen =
+  document.getElementById(
+    "loadingScreen"
+  );
+
 const discountThreshold =
   document.getElementById("discountThreshold");
 
@@ -78,6 +83,9 @@ async function loadProducts() {
 
     renderProducts();
 
+    loadingScreen.style.display =
+      "none";
+
     return;
 
   }
@@ -109,6 +117,8 @@ async function loadProducts() {
 
   renderProducts();
 
+    loadingScreen.style.display =
+      "none";
 }
 
 function formatNumberInput(input) {
@@ -531,6 +541,29 @@ paymentSelect.addEventListener(
 productSelect.addEventListener(
   "input",
   () => {
+
+    // CLEAR SOLD PRICE
+    soldPriceInput.value = "";
+
+    // CLEAR RESULT
+    document.getElementById(
+      "commission"
+    ).innerText = "₱0.00";
+
+    document.getElementById(
+      "grossProfit"
+    ).innerText = "₱0.00";
+
+    document.getElementById(
+      "commissionRate"
+    ).innerText = "0%";
+
+    // CLEAR ERROR
+    priceError.innerText = "";
+
+    soldPriceInput.classList.remove(
+      "input-error"
+    );
 
     const keyword =
       productSelect.value
