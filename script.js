@@ -468,11 +468,11 @@ function updatePrice() {
   let basePrice = 0;
 
   // CASH
-  if (payment === "Cash") {
+  if (payment === "Card Transaction") {
 
     basePrice =
       Number(
-        String(selected.cashPrice)
+        String(selected.srp)
           .replace(/,/g, "")
       );
 
@@ -483,7 +483,7 @@ function updatePrice() {
 
     basePrice =
       Number(
-        String(selected.srp)
+        String(selected.cashPrice)
           .replace(/,/g, "")
       );
 
