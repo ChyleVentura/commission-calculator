@@ -16,6 +16,11 @@ const sellingPrice =
 const soldPriceInput =
   document.getElementById("sold_price");
 
+const dropdown =
+  document.getElementById(
+    "productDropdown"
+  );
+
 const discountThreshold =
   document.getElementById("discountThreshold");
 
@@ -27,6 +32,13 @@ formatNumberInput(discountThreshold);
 
 let productsData = [];
 
+let addonsData = [];
+
+let selectedAddons = [];
+
+let originalBasePrice = 0;
+
+    localStorage.clear();
     // SETTINGS
     const discountLimit = 0.03;
 
@@ -77,7 +89,12 @@ async function loadProducts() {
   const data =
     await response.json();
 
-  productsData = data;
+  productsData =
+    data.products;
+
+  addonsData =
+    data.addons;
+
 
   // SAVE CACHE
   localStorage.setItem(
@@ -115,20 +132,307 @@ function formatNumberInput(input) {
 
 }
 
+document
+  .getElementById("addAddonBtn")
+  .addEventListener(
+    "click",
+    addAddonSelect
+);
+
+function addAddonSelect() {
+
+  const container =
+    document.getElementById(
+      "addonContainer"
+    );
+
+  // ROW
+  const row =
+    document.createElement("div");
+
+  row.classList.add(
+    "addon-row"
+  );
+
+  // SELECT
+  const select =
+    document.createElement(
+      "select"
+    );
+
+  select.classList.add(
+    "addon-select"
+  );
+
+  select.innerHTML =
+    `<option value="">
+      Select Add-on
+    </option>`;
+
+  addonsData.forEach(addon => {
+
+    select.innerHTML += `
+      <option
+        value="${addon.amount}">
+        ${addon.name}
+        (+₱${Number(addon.amount)
+          .toLocaleString()})
+      </option>
+    `;
+
+  });
+
+  select.addEventListener(
+    "change",
+    updateAddonTotal
+  );
+
+  // DELETE BUTTON
+  const deleteBtn =
+    document.createElement(
+      "button"
+    );
+
+  deleteBtn.type = "button";
+
+  deleteBtn.innerText = "✕";
+
+  deleteBtn.classList.add(
+    "delete-addon-btn"
+  );
+
+  deleteBtn.addEventListener(
+    "click",
+    () => {
+
+      row.remove();
+
+      updateAddonTotal();
+
+    }
+  );
+
+  // APPEND
+  row.appendChild(select);
+
+  row.appendChild(deleteBtn);
+
+  container.appendChild(row);
+
+}
+
+function updateAddonTotal() {
+
+  let addonTotal = 0;
+
+  document
+    .querySelectorAll(
+      ".addon-select"
+    )
+    .forEach(select => {
+
+      addonTotal +=
+        Number(select.value || 0);
+
+    });
+
+  // FINAL PRICE
+  const finalPrice =
+    originalBasePrice +
+    addonTotal;
+
+  // UPDATE SELLING PRICE
+  sellingPrice.innerText =
+    `₱${finalPrice.toLocaleString(
+      "en-US"
+    )}`;
+
+  // NEW THRESHOLD
+  const thresholdPrice =
+    finalPrice -
+    (finalPrice * discountLimit);
+
+  // UPDATE THRESHOLD
+  discountThreshold.innerText =
+    `₱${thresholdPrice.toLocaleString(
+      "en-US",
+      {
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+      }
+    )}`;
+
+  validateSoldPrice();
+
+}
+
+function validateSoldPrice() {
+
+  const soldPrice =
+    Number(
+      soldPriceInput.value
+        .replace(/[₱,]/g, "")
+    );
+
+  const threshold =
+    Number(
+      discountThreshold.innerText
+        .replace(/[₱,]/g, "")
+    );
+
+  const selling =
+    Number(
+      sellingPrice.innerText
+        .replace(/[₱,]/g, "")
+    );
+
+  // EMPTY
+  if (!soldPriceInput.value) {
+
+    priceError.innerText = "";
+
+    soldPriceInput.classList.remove(
+      "input-error"
+    );
+
+    return;
+
+  }
+
+  // BELOW THRESHOLD
+  if (soldPrice < threshold) {
+
+    priceError.innerText =
+      `Minimum allowed price is ₱${threshold.toLocaleString(
+        "en-US",
+        {
+          minimumFractionDigits:2,
+          maximumFractionDigits:2
+        }
+      )}`;
+
+    soldPriceInput.classList.add(
+      "input-error"
+    );
+
+    return;
+
+  }
+
+  // ABOVE SELLING PRICE
+  if (soldPrice > selling) {
+
+    priceError.innerText =
+      `Sold price cannot exceed ₱${selling.toLocaleString(
+        "en-US",
+        {
+          minimumFractionDigits:2,
+          maximumFractionDigits:2
+        }
+      )}`;
+
+    soldPriceInput.classList.add(
+      "input-error"
+    );
+
+    return;
+
+  }
+
+  // VALID
+  priceError.innerText = "";
+
+  soldPriceInput.classList.remove(
+    "input-error"
+  );
+
+}
+
+function validateProduct() {
+
+  const value =
+    productSelect.value.trim();
+
+  const exists =
+    productsData.some(
+      item =>
+        item.product === value
+    );
+
+  // INVALID
+  if (!exists) {
+
+    productError.innerText =
+      "Invalid product selected.";
+
+    productSelect.classList.add(
+      "input-error"
+    );
+
+    // CLEAR INPUT
+    productSelect.value = "";
+
+    // CLEAR PRICE INFO
+    sellingPrice.innerText =
+      "₱0.00";
+
+    discountThreshold.innerText =
+      "₱0.00";
+
+    return false;
+
+  }
+
+  // VALID
+  productError.innerText = "";
+
+  productSelect.classList.remove(
+    "input-error"
+  );
+
+  return true;
+
+}
+
 
 function renderProducts() {
 
-  productList.innerHTML = "";
+  showDropdown(productsData);
 
-  productsData.forEach(item => {
+}
 
-    const option =
-      document.createElement("option");
+function showDropdown(data) {
 
-    option.value =
+  dropdown.innerHTML = "";
+
+  data.forEach(item => {
+
+    const div =
+      document.createElement("div");
+
+    div.classList.add(
+      "dropdown-item"
+    );
+
+    div.innerText =
       item.product;
 
-    productList.appendChild(option);
+    div.addEventListener(
+      "click",
+      () => {
+
+        productSelect.value =
+          item.product;
+
+        dropdown.style.display =
+          "none";
+
+        updatePrice();
+
+      }
+    );
+
+    dropdown.appendChild(div);
 
   });
 
@@ -164,11 +468,11 @@ function updatePrice() {
   let basePrice = 0;
 
   // CASH
-  if (payment === "Card Transaction") {
+  if (payment === "Cash") {
 
     basePrice =
       Number(
-        String(selected.srp)
+        String(selected.cashPrice)
           .replace(/,/g, "")
       );
 
@@ -179,27 +483,36 @@ function updatePrice() {
 
     basePrice =
       Number(
-        String(selected.cashPrice)
+        String(selected.srp)
           .replace(/,/g, "")
       );
 
   }
 
-    sellingPrice.innerText =
-      Number(basePrice)
-        .toLocaleString("en-US");
+  // SAVE ORIGINAL PRICE
+  originalBasePrice =
+    basePrice;
 
-  // FINAL THRESHOLD PRICE
+  // DISPLAY PRICE
+  sellingPrice.innerText =
+    `₱${basePrice.toLocaleString()}`;
+
+  // THRESHOLD
   const thresholdPrice =
     basePrice -
     (basePrice * discountLimit);
 
-    discountThreshold.innerText =
-      Number(thresholdPrice)
-        .toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        });
+  discountThreshold.innerText =
+    `₱${thresholdPrice.toLocaleString(
+      "en-US",
+      {
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+      }
+    )}`;
+
+  // UPDATE ADDONS
+  updateAddonTotal();
 
 }
 
@@ -215,6 +528,64 @@ paymentSelect.addEventListener(
   loadProducts
 );
 
+productSelect.addEventListener(
+  "input",
+  () => {
+
+    const keyword =
+      productSelect.value
+        .toLowerCase();
+
+    const filtered =
+      productsData.filter(item =>
+        item.product
+          .toLowerCase()
+          .includes(keyword)
+      );
+
+    if (
+      filtered.length > 0 &&
+      keyword
+    ) {
+
+      dropdown.style.display =
+        "block";
+
+      showDropdown(filtered);
+
+    }
+
+    else {
+
+      dropdown.style.display =
+        "none";
+
+    }
+
+});
+
+productSelect.addEventListener(
+  "blur",
+  validateProduct
+);
+
+document.addEventListener(
+  "click",
+  (e) => {
+
+    if (
+      !e.target.closest(
+        ".search-wrapper"
+      )
+    ) {
+
+      dropdown.style.display =
+        "none";
+
+    }
+
+});
+
 const priceError =
   document.getElementById("priceError");
 
@@ -225,19 +596,19 @@ soldPriceInput.addEventListener(
     const sold =
       Number(
         soldPriceInput.value
-          .replace(/,/g, "")
+          .replace(/[₱,]/g, "")
       );
 
     const threshold =
       Number(
         discountThreshold.innerText
-          .replace(/,/g, "")
+          .replace(/[₱,]/g, "")
       );
 
     const selling =
       Number(
         sellingPrice.innerText
-          .replace(/,/g, "")
+          .replace(/[₱,]/g, "")
       );
 
     // EMPTY
@@ -257,36 +628,48 @@ soldPriceInput.addEventListener(
     if (sold < threshold) {
 
       priceError.innerText =
-        `Minimum allowed price is ₱${threshold.toLocaleString()}`;
+        `Minimum allowed price is ₱${threshold.toLocaleString(
+          "en-US",
+          {
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+          }
+        )}`;
 
       soldPriceInput.classList.add(
         "input-error"
       );
+
+      return;
 
     }
 
     // ABOVE SELLING PRICE
-    else if (sold > selling) {
+    if (sold > selling) {
 
       priceError.innerText =
-        `Sold price cannot exceed ₱${selling.toLocaleString()}`;
+        `Sold price cannot exceed ₱${selling.toLocaleString(
+          "en-US",
+          {
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+          }
+        )}`;
 
       soldPriceInput.classList.add(
         "input-error"
       );
 
+      return;
+
     }
 
     // VALID
-    else {
+    priceError.innerText = "";
 
-      priceError.innerText = "";
-
-      soldPriceInput.classList.remove(
-        "input-error"
-      );
-
-    }
+    soldPriceInput.classList.remove(
+      "input-error"
+    );
 
 });
 
@@ -300,6 +683,12 @@ document
 
     const payment =
       paymentSelect.value;
+
+    if (priceError.innerText !== "") {
+
+      return;
+
+    }
 
     const sellprice =
       Number(
@@ -360,28 +749,11 @@ document
 
     }
 
-    const selected =
-      productsData.find(
-        item => item.product === product
+    const basePrice =
+      Number(
+        sellingPrice.innerText
+          .replace(/[₱,]/g, "")
       );
-
-    let basePrice = 0;
-
-    // CASH PRICE
-    if (payment === "Card Transaction") {
-
-      basePrice =
-        selected.srp;
-
-    }
-
-    // SRP
-    else {
-
-      basePrice =
-        selected.cashPrice;
-
-    }
 
     // THRESHOLD
     const thresholdPrice =
@@ -435,6 +807,5 @@ document
       "commissionRate"
     ).innerText =
       `${(commissionRate * 100).toFixed(2)}%`;
-
 
 });
