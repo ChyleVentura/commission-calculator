@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Commission Calculator</title>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <div id="loadingScreen">
+
+    <div class="loader"></div>
+
+    <p>Loading products...</p>
+
+  </div>
+
+  <div class="container">
+
+  <div class="logo-container">
+
+    <img
+      src="imgs/Asset 4.svg"
+      alt="Logo"
+      class="logo"
+    />
+
+  </div>
+
+    <h1>Commission Calculator</h1>
+
+    <!-- Product -->
+    <div class="form-group">
+
+      <label>
+        Search Product
+      </label>
+
+      <div class="search-wrapper">
+
+        <input
+          type="text"
+          id="product"
+          placeholder="Search product..."
+          autocomplete="off"
+        />
+
+        <small
+          id="productError"
+          class="error-message">
+        </small>
+
+        <div
+          id="productDropdown"
+          class="dropdown">
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Payment Mode -->
+    <div class="form-group">
+      <label for="payment">Mode of Payment</label>
+
+      <select id="payment">
+        <option value="">Choose Payment Mode</option>
+        <option value="Cash">Cash</option>
+        <option value="Card Transaction">Card Transaction</option>
+        <option value="Financing">Financing</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+
+      <label>Add-ons</label>
+
+      <button
+        type="button"
+        id="addAddonBtn"
+        class="addon-btn">
+        + Add-on
+      </button>
+
+      <div id="addonContainer"></div>
+
+    </div>
+
+    <!-- PRICE ROW -->
+    <div class="price-row">
+
+      <!-- Selling Price -->
+      <div class="price-box">
+
+        <label>Selling Price</label>
+
+        <div
+          id="price"
+          class="price-text">
+          ₱0.00
+        </div>
+
+      </div>
+
+      <!-- Discount Threshold -->
+      <div class="price-box">
+
+        <label>Minimum Selling Price</label>
+
+        <div
+          id="discountThreshold"
+          class="price-text">
+          ₱0.00
+        </div>
+
+      </div>
+
+    </div>
+
+        <!-- Sold Price -->
+    <div class="form-group">
+      <label for="sold_price">Sold Price</label>
+
+      <input
+        type="text"
+        id="sold_price"
+        placeholder="Enter sold price"
+      />
+      <small
+        id="priceError"
+        class="error-message">
+      </small>
+    </div>
+
+
+    <!-- Button -->
+    <button id="computeBtn">
+      Compute Commission
+    </button>
+
+    <!-- Result -->
+    <div class="result">
+      <p><strong>Unit:</strong> <span id="productName"></span></p>
+      <p><strong>Add On/s:</strong> <span id="addOnSpan"></span></p>
+      <p><strong>Selling Price:</strong> <span id="sellingPriceSpan"></span></p>
+      <p><strong>Sold Price:</strong> <span id="soldPriceSpan"></span></p>
+      <p><strong>GP:</strong> <span id="grossProfit"></span></p>
+      <p><strong>Commission Rate:</strong> <span id="commissionRate"></span></p>
+      <p><strong>Total Commission:</strong> <span id="commission">₱0.00</span></p>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

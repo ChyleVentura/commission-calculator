@@ -1,5 +1,5 @@
 const SHEET_API =
-  "https://script.google.com/macros/s/AKfycbwfFbB7lTOTFDaTva6OZTbj6HvOH9FQEjgr5vUYKL8PI01ePir1TE1zNZhcn_-cg8BDog/exec";
+  "https://script.google.com/macros/s/AKfycbwfFbB7lTOTFDaTva6OZTbj6HvOH9FQEjgr5vUYKL8PI01ePir1TE1zNZhcn_-cg8BDog/exec?type=products";
 
 const productSelect =
   document.getElementById("product");
@@ -61,25 +61,40 @@ async function loadProducts() {
     "products_cache_time";
 
   const CACHE_DURATION =
-    5 * 60 * 1000; // 5 minutes
+    5 * 60 * 1000;
 
-  const now = Date.now();
+  const now =
+    Date.now();
 
   const cachedData =
-    localStorage.getItem(CACHE_KEY);
+    localStorage.getItem(
+      CACHE_KEY
+    );
 
   const cachedTime =
-    localStorage.getItem(CACHE_TIME_KEY);
+    localStorage.getItem(
+      CACHE_TIME_KEY
+    );
 
-  // USE CACHE IF STILL VALID
+  // =========================
+  // USE CACHE
+  // =========================
   if (
+
     cachedData &&
     cachedTime &&
     (now - cachedTime < CACHE_DURATION)
+
   ) {
 
-    productsData =
+    const parsed =
       JSON.parse(cachedData);
+
+    productsData =
+      parsed.products || [];
+
+    addonsData =
+      parsed.addons || [];
 
     renderProducts();
 
@@ -90,19 +105,22 @@ async function loadProducts() {
 
   }
 
-  // FETCH LATEST DATA
+  // =========================
+  // FETCH API
+  // =========================
   const response =
-    await fetch(SHEET_API);
+    await fetch(
+      SHEET_API
+    );
 
   const data =
     await response.json();
 
   productsData =
-    data.products;
+    data.products || [];
 
   addonsData =
-    data.addons;
-
+    data.addons || [];
 
   // SAVE CACHE
   localStorage.setItem(
@@ -117,8 +135,9 @@ async function loadProducts() {
 
   renderProducts();
 
-    loadingScreen.style.display =
-      "none";
+  loadingScreen.style.display =
+    "none";
+
 }
 
 function formatNumberInput(input) {
@@ -366,7 +385,12 @@ function validateProduct() {
   const exists =
     productsData.some(
       item =>
-        item.product === value
+        item.product
+          .trim()
+          .toLowerCase() ===
+        value
+          .trim()
+          .toLowerCase()
     );
 
   // INVALID
@@ -411,7 +435,7 @@ function renderProducts() {
 
 }
 
-function showDropdown(data) {
+function showDropdown(data = []) {
 
   dropdown.innerHTML = "";
 
@@ -433,6 +457,14 @@ function showDropdown(data) {
 
         productSelect.value =
           item.product;
+
+        // CLEAR ERROR
+        productError.innerText =
+          "";
+
+        productSelect.classList.remove(
+          "input-error"
+        );
 
         dropdown.style.display =
           "none";
@@ -542,44 +574,43 @@ productSelect.addEventListener(
   "input",
   () => {
 
-    // CLEAR SOLD PRICE
-    soldPriceInput.value = "";
+    // CLEAR PRODUCT ERROR
+    productError.innerText = "";
 
-    // CLEAR RESULT
-    document.getElementById(
-      "commission"
-    ).innerText = "₱0.00";
-
-    document.getElementById(
-      "grossProfit"
-    ).innerText = "₱0.00";
-
-    document.getElementById(
-      "commissionRate"
-    ).innerText = "0%";
-
-    // CLEAR ERROR
-    priceError.innerText = "";
-
-    soldPriceInput.classList.remove(
+    productSelect.classList.remove(
       "input-error"
     );
 
+    // CLEAR SOLD PRICE
+    soldPriceInput.value = "";
+
     const keyword =
       productSelect.value
+        .trim()
         .toLowerCase();
 
+    // EMPTY SEARCH
+    if (!keyword) {
+
+      dropdown.style.display =
+        "none";
+
+      return;
+
+    }
+
+    // FILTER PRODUCTS
     const filtered =
       productsData.filter(item =>
-        item.product
+
+        String(item.product)
           .toLowerCase()
           .includes(keyword)
+
       );
 
-    if (
-      filtered.length > 0 &&
-      keyword
-    ) {
+    // SHOW RESULTS
+    if (filtered.length > 0) {
 
       dropdown.style.display =
         "block";
@@ -588,6 +619,7 @@ productSelect.addEventListener(
 
     }
 
+    // NO RESULTS
     else {
 
       dropdown.style.display =
@@ -840,5 +872,62 @@ document
       "commissionRate"
     ).innerText =
       `${(commissionRate * 100).toFixed(2)}%`;
+
+    document.getElementById(
+      "productName"
+    ).innerText =
+      product;
+
+    // ADD-ONS
+    const addonNames = [];
+
+    document
+      .querySelectorAll(
+        ".addon-select"
+      )
+      .forEach(select => {
+
+        if (select.selectedIndex > 0) {
+
+          addonNames.push(
+            select.options[
+              select.selectedIndex
+            ].text
+          );
+
+        }
+
+    });
+
+    document.getElementById(
+      "addOnSpan"
+    ).innerText =
+      addonNames.length > 0
+        ? addonNames.join(", ")
+        : "None";
+
+    // SELLING PRICE
+    document.getElementById(
+      "sellingPriceSpan"
+    ).innerText =
+      `₱${sellprice.toLocaleString(
+        "en-US",
+        {
+          minimumFractionDigits:2,
+          maximumFractionDigits:2
+        }
+      )}`;
+
+    // SOLD PRICE
+    document.getElementById(
+      "soldPriceSpan"
+    ).innerText =
+      `₱${soldPrice.toLocaleString(
+        "en-US",
+        {
+          minimumFractionDigits:2,
+          maximumFractionDigits:2
+        }
+      )}`;
 
 });

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    Dashboard
+  </title>
+
+  <!-- GOOGLE ICONS -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+  />
+
+  <!-- FONT -->
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="dashboard.css"
+  />
+
+</head>
+
+<body>
+
+  <!-- LOADING -->
+  <div
+    id="loadingScreen"
+    class="loading-screen hidden"
+  >
+
+    <div class="loader"></div>
+
+    <p id="loadingText">
+      Loading...
+    </p>
+
+  </div>
+
+  <div class="dashboard">
+
+    <!-- HEADER -->
+    <div class="welcome-header">
+
+      <div>
+
+        <p class="welcome-text">
+          Welcome back
+        </p>
+
+        <h1 id="agentDisplay">
+          Agent Name
+        </h1>
+
+      </div>
+
+      <div class="top-actions">
+
+        <button id="refreshBtn">
+
+          <span class="material-symbols-outlined">
+            refresh
+          </span>
+
+        </button>
+
+        <button id="logoutBtn">
+
+          <span class="material-symbols-outlined">
+            logout
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-card">
+
+      <div class="summary-top">
+
+        <div>
+
+          <p class="summary-label">
+            Unclaimed Commissions
+          </p>
+
+          <h2 id="totalCommission">
+            ₱0.00
+          </h2>
+
+        </div>
+
+        <div class="summary-icon">
+
+          <span class="material-symbols-outlined">
+            account_balance_wallet
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- STATUS FILTERS -->
+      <div class="status-filters">
+
+        <button
+          class="filter-btn active"
+          data-status="all"
+        >
+          All
+        </button>
+
+        <button
+          class="filter-btn"
+          data-status="unpaid"
+        >
+          Unpaid
+        </button>
+
+        <button
+          class="filter-btn"
+          data-status="paid"
+        >
+          Paid
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- MONTH -->
+    <select id="monthFilter">
+
+      <option value="">
+        All Months
+      </option>
+
+      <option value="0">
+        January
+      </option>
+
+      <option value="1">
+        February
+      </option>
+
+      <option value="2">
+        March
+      </option>
+
+      <option value="3">
+        April
+      </option>
+
+      <option value="4">
+        May
+      </option>
+
+      <option value="5">
+        June
+      </option>
+
+      <option value="6">
+        July
+      </option>
+
+      <option value="7">
+        August
+      </option>
+
+      <option value="8">
+        September
+      </option>
+
+      <option value="9">
+        October
+      </option>
+
+      <option value="10">
+        November
+      </option>
+
+      <option value="11">
+        December
+      </option>
+
+    </select>
+
+    <!-- SEARCH -->
+    <div class="search-box">
+
+      <span class="material-symbols-outlined">
+        search
+      </span>
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search DR# or Unit"
+      />
+
+    </div>
+
+    <!-- RECORDS -->
+    <div id="recordsContainer"></div>
+
+  </div>
+
+  <script src="dashboard.js"></script>
+
+</body>
+</html>

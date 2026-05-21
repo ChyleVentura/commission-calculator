@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    Agent Login
+  </title>
+
+  <!-- GOOGLE ICONS -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+  />
+
+  <!-- INTER FONT -->
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="dashboard.css"
+  />
+
+</head>
+
+<body>
+
+  <!-- LOADING -->
+  <div
+    id="loadingScreen"
+    class="loading-screen hidden"
+  >
+
+    <div class="loader"></div>
+
+    <p id="loadingText">
+      Loading...
+    </p>
+
+  </div>
+
+  <!-- LOGIN -->
+  <div class="login-wrapper">
+
+    <div class="login-container">
+
+      <!-- LOGO -->
+      <div class="login-logo">
+
+        <span class="material-symbols-outlined">
+          account_balance_wallet
+        </span>
+
+      </div>
+
+      <p class="login-subtitle">
+        Commission Portal
+      </p>
+
+      <h1 class="login-title">
+        Agent Login
+      </h1>
+
+      <!-- USERNAME -->
+      <div class="input-group">
+
+        <span class="material-symbols-outlined">
+          person
+        </span>
+
+        <input
+          type="text"
+          id="agentName"
+          placeholder="Username"
+        />
+
+      </div>
+
+      <!-- PIN -->
+      <div class="input-group">
+
+        <span class="material-symbols-outlined">
+          lock
+        </span>
+
+        <input
+          type="password"
+          id="pin"
+          placeholder="PIN"
+        />
+
+      </div>
+
+      <!-- LOGIN -->
+      <button id="loginBtn">
+
+        <span class="material-symbols-outlined">
+          login
+        </span>
+
+        Login
+
+      </button>
+
+      <!-- ERROR -->
+      <p id="loginError"></p>
+
+      <!-- BACK -->
+      <a
+        href="index.html"
+        class="back-home-btn"
+      >
+
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+
+        Back to Homepage
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <script src="login.js"></script>
+
+</body>
+</html>
