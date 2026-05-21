@@ -76,25 +76,25 @@
 
       </div>
 
-      <div class="top-actions">
+        <div class="top-actions">
 
         <button id="refreshBtn">
 
-          <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined">
             refresh
-          </span>
+            </span>
 
         </button>
 
-        <button id="logoutBtn">
+        <button id="settingsBtn">
 
-          <span class="material-symbols-outlined">
-            logout
-          </span>
+            <span class="material-symbols-outlined">
+            settings
+            </span>
 
         </button>
 
-      </div>
+        </div>
 
     </div>
 
@@ -104,6 +104,14 @@
       <div class="summary-top">
 
         <div>
+
+            <p class="monthly-total-label">
+            This month's commission
+            </p>
+
+            <h3 id="monthlyTotalCommission">
+            ₱0.00
+            </h3>
 
           <p class="summary-label">
             Unclaimed Commissions
@@ -229,6 +237,130 @@
     <div id="recordsContainer"></div>
 
   </div>
+  <!-- SETTINGS MODAL -->
+<div
+  id="settingsModal"
+  class="modal hidden"
+>
+
+  <div class="modal-content">
+    <h2>
+      Settings
+    </h2>
+
+    <button
+    id="changePasswordBtn"
+    class="settings-action"
+    >
+
+    <div class="settings-left">
+
+        <div class="settings-icon">
+
+        <span class="material-symbols-outlined">
+            lock_reset
+        </span>
+
+        </div>
+
+        <span class="settings-text">
+        Change Password
+        </span>
+
+    </div>
+
+    <span class="material-symbols-outlined settings-arrow">
+        chevron_right
+    </span>
+
+    </button>
+
+    <button
+    id="logoutBtn"
+    class="settings-action logout-action"
+    >
+
+    <div class="settings-left">
+
+        <div class="settings-icon">
+
+        <span class="material-symbols-outlined">
+            logout
+        </span>
+
+        </div>
+
+        <span class="settings-text">
+        Logout
+        </span>
+
+    </div>
+
+    <span class="material-symbols-outlined settings-arrow">
+        chevron_right
+    </span>
+
+    </button>
+  </div>
+
+</div>
+<!-- CHANGE PASSWORD MODAL -->
+<div
+  id="passwordModal"
+  class="modal hidden"
+>
+
+  <div class="modal-content">
+
+
+    <h2>
+      Change Password
+    </h2>
+
+    <input
+      type="password"
+      id="currentPin"
+      placeholder="Current PIN"
+      class="modal-input"
+    />
+
+    <input
+      type="password"
+      id="newPin"
+      placeholder="New PIN"
+      class="modal-input"
+    />
+
+    <button id="savePasswordBtn">
+
+      <span class="material-symbols-outlined">
+        save
+      </span>
+
+      Save Changes
+
+    </button>
+
+    <p id="passwordMessage"></p>
+
+  </div>
+
+</div>
+
+<div
+  id="successPopup"
+  class="success-popup hidden"
+>
+
+  <span class="material-symbols-outlined">
+    check_circle
+  </span>
+
+  <p id="popupText">
+    Success
+  </p>
+
+</div>
 
   <script src="dashboard.js"></script>
 

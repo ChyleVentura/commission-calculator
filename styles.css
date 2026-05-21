@@ -312,3 +312,113 @@ button:hover{
 .home-btn:active{
   transform:scale(0.98);
 }
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+
+  background:
+    rgba(0,0,0,0.35);
+
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+
+  z-index:9999;
+
+  padding:20px;
+}
+
+.modal.hidden{
+  display:none;
+}
+
+.modal-content{
+  width:100%;
+  max-width:500px;
+
+  background:white;
+
+  border-radius:28px 28px 0 0;
+
+  padding:24px;
+
+  animation:slideUp 0.25s ease;
+}
+
+@keyframes slideUp{
+
+  from{
+    transform:translateY(100%);
+  }
+
+  to{
+    transform:translateY(0);
+  }
+
+}
+
+.modal-header{
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:24px;
+}
+
+.modal-header h2{
+  font-size:24px;
+
+  font-weight:800;
+}
+
+#closeModalBtn{
+  width:42px;
+  height:42px;
+
+  border:none;
+
+  border-radius:14px;
+
+  background:#f3f4f6;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  cursor:pointer;
+}
+
+.settings-action{
+  width:100%;
+
+  border:none;
+
+  background:#f9fafb;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  display:flex;
+  align-items:center;
+
+  gap:14px;
+
+  font-size:16px;
+
+  font-weight:600;
+
+  margin-bottom:14px;
+
+  cursor:pointer;
+}
+
+.logout-action{
+  color:#dc2626;
+}
+

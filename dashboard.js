@@ -1,7 +1,22 @@
 const API_URL =
   "https://script.google.com/macros/s/AKfycbwfFbB7lTOTFDaTva6OZTbj6HvOH9FQEjgr5vUYKL8PI01ePir1TE1zNZhcn_-cg8BDog/exec";
 
-const recordsContainer =
+const settingsBtn =
+  document.getElementById(
+    "settingsBtn"
+  );
+
+const settingsModal =
+  document.getElementById(
+    "settingsModal"
+  );
+
+const closeModalBtn =
+  document.getElementById(
+    "closeModalBtn"
+  );
+
+  const recordsContainer =
   document.getElementById(
     "recordsContainer"
   );
@@ -62,6 +77,31 @@ const refreshBtn =
     "refreshBtn"
   );
 
+const passwordModal =
+  document.getElementById(
+    "passwordModal"
+  );
+
+const changePasswordBtn =
+  document.getElementById(
+    "changePasswordBtn"
+  );
+
+const savePasswordBtn =
+  document.getElementById(
+    "savePasswordBtn"
+  );
+
+const passwordMessage =
+  document.getElementById(
+    "passwordMessage"
+  );
+
+const monthlyTotalCommission =
+  document.getElementById(
+    "monthlyTotalCommission"
+  );
+
 // DEFAULT TO CURRENT MONTH
 const currentMonth =
   new Date()
@@ -120,6 +160,24 @@ async function loadDashboard() {
     allRecords =
     data.records || [];
 
+// SORT BY RELEASE DATE
+// NEWEST FIRST
+
+    allRecords.sort(
+    (a, b) =>
+
+        new Date(
+        b.releaseDate
+        )
+
+        -
+
+        new Date(
+        a.releaseDate
+        )
+
+    );
+
     renderRecords(
     allRecords
     );
@@ -156,7 +214,10 @@ function renderRecords(data) {
   const selectedMonth =
     monthFilter.value;
 
-  let unclaimedTotal =
+    let unclaimedTotal =
+        0;
+
+    let monthlyTotal =
     0;
 
   allRecords.forEach(item => {
@@ -183,12 +244,19 @@ function renderRecords(data) {
         .toLowerCase() !==
       "paid";
 
+    if (matchesMonth) {
+
+    monthlyTotal +=
+        Number(item.commission);
+
+    }
+
     if (
-      matchesMonth &&
-      unpaid
+    matchesMonth &&
+    unpaid
     ) {
 
-      unclaimedTotal +=
+    unclaimedTotal +=
         Number(item.commission);
 
     }
@@ -203,6 +271,15 @@ function renderRecords(data) {
         minimumFractionDigits:2,
         maximumFractionDigits:2
       }
+    )}`;
+
+    monthlyTotalCommission.innerText =
+    `₱${monthlyTotal.toLocaleString(
+        "en-US",
+        {
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+        }
     )}`;
 
   // ====================================
@@ -528,6 +605,257 @@ monthFilter.addEventListener(
   "change",
   applyFilters
 );
+
+
+// OPEN MODAL
+settingsBtn.addEventListener(
+  "click",
+  () => {
+
+    settingsModal.classList.remove(
+      "hidden"
+    );
+
+  }
+);
+
+// CLOSE WHEN CLICK OUTSIDE
+settingsModal.addEventListener(
+  "click",
+  (e) => {
+
+    if (
+      e.target === settingsModal
+    ) {
+
+      settingsModal.classList.add(
+        "hidden"
+      );
+
+    }
+
+  }
+);
+
+changePasswordBtn
+  .addEventListener(
+    "click",
+    () => {
+
+      settingsModal.classList.add(
+        "hidden"
+      );
+
+      passwordModal.classList.remove(
+        "hidden"
+      );
+
+    }
+);
+
+savePasswordBtn
+  .addEventListener(
+    "click",
+    async () => {
+
+      const currentPin =
+        document
+          .getElementById(
+            "currentPin"
+          )
+          .value
+          .trim();
+
+      const newPin =
+        document
+          .getElementById(
+            "newPin"
+          )
+          .value
+          .trim();
+
+      // CLEAR MESSAGE
+      passwordMessage.innerText =
+        "";
+
+      // EMPTY
+      if (
+        !currentPin ||
+        !newPin
+      ) {
+
+        passwordMessage.innerText =
+          "Complete all fields";
+
+        passwordMessage.style.color =
+          "#dc2626";
+
+        return;
+
+      }
+
+      // SAME PASSWORD
+      if (
+        currentPin === newPin
+      ) {
+
+        passwordMessage.innerText =
+          "New PIN must be different";
+
+        passwordMessage.style.color =
+          "#dc2626";
+
+        return;
+
+      }
+
+      // MIN LENGTH
+      if (
+        newPin.length < 4
+      ) {
+
+        passwordMessage.innerText =
+          "PIN must be at least 4 digits";
+
+        passwordMessage.style.color =
+          "#dc2626";
+
+        return;
+
+      }
+
+      // LOADING BUTTON
+      savePasswordBtn.disabled =
+        true;
+
+      savePasswordBtn.innerHTML =
+        `
+          <span class="material-symbols-outlined spinning">
+            progress_activity
+          </span>
+
+          Updating...
+        `;
+
+      try {
+
+        const response =
+          await fetch(
+
+`${API_URL}?type=changePassword&username=${encodeURIComponent(username)}&currentPin=${encodeURIComponent(currentPin)}&newPin=${encodeURIComponent(newPin)}`
+
+          );
+
+        const data =
+          await response.json();
+
+        // WRONG PASSWORD
+        if (data.error) {
+
+          passwordMessage.innerText =
+            data.error;
+
+          passwordMessage.style.color =
+            "#dc2626";
+
+          resetSaveButton();
+
+          return;
+
+        }
+
+        // SUCCESS POPUP
+        showPopup(
+          "Password changed successfully"
+        );
+
+        // UPDATE LOCAL PIN
+        localStorage.setItem(
+          "pin",
+          newPin
+        );
+
+        // CLEAR INPUTS
+        document.getElementById(
+          "currentPin"
+        ).value = "";
+
+        document.getElementById(
+          "newPin"
+        ).value = "";
+
+        // LOGOUT AFTER SUCCESS
+        setTimeout(() => {
+
+          localStorage.clear();
+
+          window.location.href =
+            "login.html";
+
+        }, 1800);
+
+      }
+
+      catch(error) {
+
+        passwordMessage.innerText =
+          "Something went wrong";
+
+        passwordMessage.style.color =
+          "#dc2626";
+
+        resetSaveButton();
+
+      }
+
+    }
+);
+
+// RESET BUTTON
+function resetSaveButton() {
+
+  savePasswordBtn.disabled =
+    false;
+
+  savePasswordBtn.innerHTML =
+    `
+      <span class="material-symbols-outlined">
+        save
+      </span>
+
+      Save Changes
+    `;
+
+}
+
+function showPopup(message) {
+
+  const popup =
+    document.getElementById(
+      "successPopup"
+    );
+
+  const popupText =
+    document.getElementById(
+      "popupText"
+    );
+
+  popupText.innerText =
+    message;
+
+  popup.classList.remove(
+    "hidden"
+  );
+
+  setTimeout(() => {
+
+    popup.classList.add(
+      "hidden"
+    );
+
+  }, 1600);
+
+}
 
 // LOAD
 loadDashboard();
