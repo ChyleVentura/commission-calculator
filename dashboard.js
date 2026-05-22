@@ -46,6 +46,11 @@ const loadingText =
     "loadingText"
   );
 
+const totalCollected =
+  document.getElementById(
+    "totalCollected"
+  );
+
 // LOGIN DATA
 const agentName =
   localStorage.getItem(
@@ -110,6 +115,34 @@ const currentMonth =
 
 monthFilter.value =
   currentMonth;
+
+const fabBtn =
+  document.getElementById(
+    "fabBtn"
+  );
+
+fabBtn.addEventListener(
+  "click",
+  () => {
+
+    // SHOW LOADER
+    loadingScreen.classList.remove(
+      "hidden"
+    );
+
+    loadingText.innerText =
+      "Loading form...";
+
+    // DELAY
+    setTimeout(() => {
+
+      window.location.href =
+        "submit-dr.html";
+
+    }, 700);
+
+  }
+);
 
 // NOT LOGGED IN
 if (!agentName || !username || !pin) {
@@ -214,73 +247,84 @@ function renderRecords(data) {
   const selectedMonth =
     monthFilter.value;
 
-    let unclaimedTotal =
-        0;
+let approvedTotal = 0;
 
-    let monthlyTotal =
-    0;
+let collectedTotal = 0;
 
-  allRecords.forEach(item => {
+allRecords.forEach(item => {
 
-    const date =
-      new Date(
-        item.releaseDate
-      );
+  const date =
+    new Date(
+      item.releaseDate
+    );
 
-    const matchesMonth =
+  const matchesMonth =
 
-      selectedMonth === ""
+    selectedMonth === ""
 
-      ||
+    ||
 
-      date.getMonth()
-        .toString() ===
-      selectedMonth;
+    date.getMonth()
+      .toString() ===
+    selectedMonth;
 
-    const unpaid =
+  const status =
+    String(item.paymentStatus)
+      .trim()
+      .toLowerCase();
 
-      String(item.paymentStatus)
-        .trim()
-        .toLowerCase() !==
-      "paid";
+  // APPROVED BUT NOT COLLECTED
+  if (
 
-    if (matchesMonth) {
+    matchesMonth
 
-    monthlyTotal +=
-        Number(item.commission);
+    &&
 
-    }
+    status === "approved"
 
-    if (
-    matchesMonth &&
-    unpaid
-    ) {
+  ) {
 
-    unclaimedTotal +=
-        Number(item.commission);
+    approvedTotal +=
+      Number(item.commission);
 
-    }
+  }
 
-  });
+  // COLLECTED
+  if (
+
+    matchesMonth
+
+    &&
+
+    status === "collected"
+
+  ) {
+
+    collectedTotal +=
+      Number(item.commission);
+
+  }
+
+});
 
   // UPDATE TOTAL
-  totalCommission.innerText =
-    `₱${unclaimedTotal.toLocaleString(
-      "en-US",
-      {
-        minimumFractionDigits:2,
-        maximumFractionDigits:2
-      }
-    )}`;
+totalCommission.innerText =
+  `₱${approvedTotal.toLocaleString(
+    "en-US",
+    {
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    }
+  )}`;
 
-    monthlyTotalCommission.innerText =
-    `₱${monthlyTotal.toLocaleString(
-        "en-US",
-        {
-        minimumFractionDigits:2,
-        maximumFractionDigits:2
-        }
-    )}`;
+totalCollected.innerText =
+  `₱${collectedTotal.toLocaleString(
+    "en-US",
+    {
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    }
+  )}`;
 
   // ====================================
   // EMPTY
@@ -320,12 +364,42 @@ function renderRecords(data) {
         }
       );
 
-    const paid =
+      const status =
+        String(item.paymentStatus)
+          .trim()
+          .toLowerCase();
 
-      String(item.paymentStatus)
-        .trim()
-        .toLowerCase() ===
-      "paid";
+      let badgeClass =
+        "pending-badge";
+
+      let badgeText =
+        "FOR APPROVAL";
+
+      // APPROVED
+      if (
+        status === "approved"
+      ) {
+
+        badgeClass =
+          "approved-badge";
+
+        badgeText =
+          "APPROVED";
+
+      }
+
+      // COLLECTED
+      if (
+        status === "collected"
+      ) {
+
+        badgeClass =
+          "paid-badge";
+
+        badgeText =
+          "COLLECTED";
+
+      }
 
     const card =
       document.createElement(
@@ -338,85 +412,189 @@ function renderRecords(data) {
 
     card.innerHTML = `
 
-      <div class="card-header">
+  <!-- TOP -->
+  <div class="card-top">
 
-        <div>
+    <div>
 
-          <p class="label">
-            DR#
-          </p>
+      <p class="label">
+        DR#
+      </p>
 
-          <h3>
-            ${item.dr}
-          </h3>
+      <h3>
+        ${item.dr}
+      </h3>
 
-        </div>
+    </div>
 
-        <div class="header-right">
+    <div class="header-right">
 
-          ${
-            paid
+      <div class="${badgeClass}">
+        ${badgeText}
+      </div>
 
-            ?
+      <div class="commission-badge">
 
-            `<div class="paid-badge">
-              PAID
-            </div>`
+        ₱${Number(item.commission)
+          .toLocaleString(
+            "en-US",
+            {
+              minimumFractionDigits:2,
+              maximumFractionDigits:2
+            }
+          )}
 
-            :
+      </div>
 
-            `<div class="unpaid-badge">
-              UNPAID
-            </div>`
+    </div>
 
-          }
+  </div>
 
-          <div class="commission-badge">
+  <!-- TOGGLE -->
+  <button
+    class="expand-btn"
+  >
 
-            ₱${Number(item.commission)
-              .toLocaleString(
-                "en-US",
-                {
-                  minimumFractionDigits:2,
-                  maximumFractionDigits:2
-                }
-              )}
+    <span class="material-symbols-outlined">
+      expand_more
+    </span>
+
+    View Details
+
+  </button>
+
+  <!-- DETAILS -->
+  <div class="card-details hidden">
+
+    <div class="card-body">
+
+      <div class="info-row">
+
+        <span class="info-label">
+          Release Date
+        </span>
+
+        <span class="info-value">
+          ${formattedDate}
+        </span>
+
+      </div>
+
+      <div class="info-row">
+
+        <span class="info-label">
+          Customer
+        </span>
+
+        <span class="info-value">
+          ${item.customerName}
+        </span>
+
+      </div>
+
+      <div class="info-row">
+
+        <span class="info-label">
+          Unit
+        </span>
+
+        <span class="info-value">
+          ${item.unit}
+        </span>
+
+      </div>
+      ${
+        item.addons
+        &&
+        String(item.addons)
+          .trim() !== ""
+
+        ?
+
+        `
+          <div class="info-row">
+
+            <span class="info-label">
+              Add-ons
+            </span>
+
+            <span class="info-value">
+              ${item.addons}
+            </span>
 
           </div>
+        `
 
-        </div>
+        :
 
-      </div>
+        ""
 
-      <div class="card-body">
+      }
 
-        <div class="info-row">
+      ${
+        status === "collected"
 
-          <span class="info-label">
-            Release Date
-          </span>
+        ?
 
-          <span class="info-value">
-            ${formattedDate}
-          </span>
+        `
+          <div class="info-row">
 
-        </div>
+            <span class="info-label">
+              Collection Date
+            </span>
 
-        <div class="info-row">
+            <span class="info-value">
+              ${new Date(
+                item.paymentDate
+              ).toLocaleDateString(
+                "en-US",
+                {
+                  month:"long",
+                  day:"numeric",
+                  year:"numeric"
+                }
+              )}
+            </span>
 
-          <span class="info-label">
-            Unit
-          </span>
+          </div>
+        `
 
-          <span class="info-value">
-            ${item.unit}
-          </span>
+        :
 
-        </div>
+        ""
 
-      </div>
+      }
 
-    `;
+    </div>
+
+  </div>
+
+`;
+
+const expandBtn =
+  card.querySelector(
+    ".expand-btn"
+  );
+
+const details =
+  card.querySelector(
+    ".card-details"
+  );
+
+expandBtn.addEventListener(
+  "click",
+  () => {
+
+    details.classList.toggle(
+      "hidden"
+    );
+
+    expandBtn.classList.toggle(
+      "expanded"
+    );
+
+  }
+);
 
     recordsContainer.appendChild(
       card
@@ -484,7 +662,9 @@ function applyFilters() {
   }
 
   // STATUS
-if (currentStatus === "paid") {
+if (
+  currentStatus !== "all"
+) {
 
   filtered =
     filtered.filter(item =>
@@ -492,7 +672,7 @@ if (currentStatus === "paid") {
       String(item.paymentStatus)
         .trim()
         .toLowerCase() ===
-      "paid"
+      currentStatus
 
     );
 

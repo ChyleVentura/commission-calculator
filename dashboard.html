@@ -106,20 +106,20 @@
         <div>
 
             <p class="monthly-total-label">
-            This month's commission
+            Total Collected
             </p>
 
-            <h3 id="monthlyTotalCommission">
+            <h2 id="totalCollected">
             ₱0.00
-            </h3>
+            </h2>
 
           <p class="summary-label">
-            Unclaimed Commissions
+            Not Yet Collected
           </p>
 
-          <h2 id="totalCommission">
+          <h3 id="totalCommission">
             ₱0.00
-          </h2>
+          </h3>
 
         </div>
 
@@ -145,16 +145,23 @@
 
         <button
           class="filter-btn"
-          data-status="unpaid"
+          data-status="for approval"
         >
-          Unpaid
+          For Approval
         </button>
 
         <button
           class="filter-btn"
-          data-status="paid"
+          data-status="approved"
         >
-          Paid
+          Approved
+        </button>
+
+        <button
+          class="filter-btn"
+          data-status="collected"
+        >
+          Collected
         </button>
 
       </div>
@@ -361,6 +368,15 @@
   </p>
 
 </div>
+
+<!-- FLOATING BUTTON -->
+<button id="fabBtn">
+
+  <span class="material-symbols-outlined">
+    add
+  </span>
+
+</button>
 
   <script src="dashboard.js"></script>
 

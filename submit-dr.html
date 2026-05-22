@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    Submit DR
+  </title>
+
+  <!-- GOOGLE ICONS -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+  />
+
+  <!-- FONT -->
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="submit-dr.css"
+  />
+
+</head>
+
+<body>
+
+  <!-- LOADER -->
+  <div
+    id="loadingScreen"
+    class="loading-screen hidden"
+  >
+
+    <div class="loader"></div>
+
+    <p id="loadingText">
+      Submitting DR...
+    </p>
+
+  </div>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="top-bar">
+
+      <button id="backBtn">
+
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+
+      </button>
+
+      <h1>
+        Submit DR
+      </h1>
+
+    </div>
+
+    <!-- FORM -->
+    <div class="form-card">
+
+      <!-- DR -->
+      <div class="field-group">
+
+        <div class="dr-input-wrapper">
+
+          <span class="dr-prefix">
+            DR-
+          </span>
+
+          <input
+            type="text"
+            id="drNumber"
+            placeholder="2026-5005"
+            maxlength="9"
+          />
+
+        </div>
+
+        <p id="drError"></p>
+
+      </div>
+
+      <!-- CUSTOMER -->
+      <div class="field-group">
+
+        <input
+          type="text"
+          id="customerName"
+          placeholder="Customer Name"
+        />
+
+        <p id="customerNameError"></p>
+
+      </div>
+
+      <!-- DATE -->
+      <div class="field-group">
+
+        <input
+        type="text"
+        id="releaseDate"
+        placeholder="Release Date"
+        onfocus="(this.type='date')"
+        onblur="if(!this.value)this.type='text'"
+        />
+
+        <p id="releaseDateError"></p>
+
+      </div>
+
+      <!-- PAYMENT -->
+      <div class="field-group">
+
+        <select id="paymentType">
+
+        <option
+            value=""
+            selected
+            disabled
+        >
+            Payment Method
+        </option>
+
+        <option value="cash">
+            Cash
+        </option>
+
+        <option value="financing">
+            Financing
+        </option>
+
+        <option value="card">
+            Card Transaction
+        </option>
+
+        </select>
+
+        <p id="paymentTypeError"></p>
+
+      </div>
+
+      <!-- UNIT -->
+      <div class="field-group">
+
+        <div class="search-wrapper">
+
+          <input
+            type="text"
+            id="unit"
+            placeholder="Select Unit"
+            autocomplete="off"
+          />
+
+          <div
+            id="productDropdown"
+            class="dropdown"
+          ></div>
+
+        </div>
+
+        <p id="unitError"></p>
+
+      </div>
+
+      <!-- ADDON -->
+      <button id="addAddonBtn">
+
+        <span class="material-symbols-outlined">
+          add
+        </span>
+
+        Add Add-on
+
+      </button>
+
+      <div id="addonContainer"></div>
+
+      <!-- SOLD PRICE -->
+      <div class="field-group">
+
+        <input
+          type="text"
+          id="soldPrice"
+          placeholder="Sold Price"
+        />
+
+        <p id="soldPriceError"></p>
+
+      </div>
+
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-card">
+
+      <div class="summary-row">
+
+        <span>
+          Selling Price
+        </span>
+
+        <strong id="sellingPrice">
+          ₱0.00
+        </strong>
+
+      </div>
+
+      <div class="summary-row">
+
+        <span>
+          Discount Threshold
+        </span>
+
+        <strong id="threshold">
+          ₱0.00
+        </strong>
+
+      </div>
+
+      <div class="summary-row">
+
+        <span>
+          Commissionable Amount
+        </span>
+
+        <strong id="grossProfit">
+          ₱0.00
+        </strong>
+
+      </div>
+
+      <div class="summary-row">
+
+        <span>
+          Commission Rate
+        </span>
+
+    <strong id="commissionRateDisplay">
+    -
+    </strong>
+
+      </div>
+
+      <div class="summary-row">
+
+        <span>
+          Commission
+        </span>
+
+        <strong id="commission">
+          ₱0.00
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-bar">
+
+    <div class="submit-content">
+
+      <p id="formError"></p>
+
+      <button id="submitBtn">
+
+        <span class="material-symbols-outlined">
+          send
+        </span>
+
+        Submit DR
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <script src="submit-dr.js"></script>
+
+</body>
+</html>
