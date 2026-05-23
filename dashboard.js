@@ -1008,6 +1008,34 @@ function resetSaveButton() {
 
 }
 
+window.addEventListener(
+  "click",
+  e => {
+
+    // SETTINGS MODAL
+    if (
+      e.target === settingsModal
+    ) {
+
+      settingsModal.classList.add(
+        "hidden"
+      );
+
+    }
+
+    // PASSWORD MODAL
+    if (
+      e.target === passwordModal
+    ) {
+
+      passwordModal.classList.add(
+        "hidden"
+      );
+
+    }
+
+});
+
 function showPopup(message) {
 
   const popup =

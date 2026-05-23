@@ -1,156 +1,387 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Commission Calculator</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
-  <link rel="stylesheet" href="styles.css" />
+  <title>
+    Commission Calculator
+  </title>
+
+  <!-- TAILWIND -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FONT -->
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+
+    body{
+      font-family:"Inter",sans-serif;
+    }
+
+  </style>
+
 </head>
 
-<body>
+<body class="bg-black text-white min-h-screen overflow-x-hidden">
 
-  <div id="loadingScreen">
+<!-- BACK BUTTON -->
+<a
+  href="index.html"
+  class="fixed top-5 left-5 z-50 w-12 h-12 rounded-2xl bg-[#111111] border border-yellow-400/20 flex items-center justify-center text-yellow-400 shadow-lg active:scale-95 transition"
+>
 
-    <div class="loader"></div>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    stroke-width="2"
+  >
 
-    <p>Loading products...</p>
-
-  </div>
-
-  <div class="container">
-
-  <div class="logo-container">
-
-    <img
-      src="imgs/Asset 4.svg"
-      alt="Logo"
-      class="logo"
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M15 19l-7-7 7-7"
     />
 
+  </svg>
+
+</a>
+
+  <!-- BACKGROUND -->
+  <div class="absolute inset-0 overflow-hidden">
+
+    <div
+      class="absolute -top-40 -right-40 w-96 h-96 bg-yellow-400/20 rounded-full blur-3xl"
+    ></div>
+
+    <div
+      class="absolute bottom-0 -left-20 w-80 h-80 bg-yellow-500/10 rounded-full blur-3xl"
+    ></div>
+
   </div>
 
-    <h1>Commission Calculator</h1>
+  <!-- LOADING -->
+  <div
+    id="loadingScreen"
+    class="fixed inset-0 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center z-50"
+  >
 
-    <!-- Product -->
-    <div class="form-group">
+    <div
+      class="w-14 h-14 border-[5px] border-yellow-400/20 border-t-yellow-400 rounded-full animate-spin"
+    ></div>
 
-      <label>
-        Search Product
-      </label>
+    <p class="mt-5 text-gray-300 font-medium">
+      Loading products...
+    </p>
 
-      <div class="search-wrapper">
+  </div>
 
-        <input
-          type="text"
-          id="product"
-          placeholder="Search product..."
-          autocomplete="off"
-        />
+  <!-- MAIN -->
+  <div class="relative z-10 px-5 py-8 flex justify-center">
 
-        <small
-          id="productError"
-          class="error-message">
-        </small>
+    <div class="w-full max-w-md">
 
-        <div
-          id="productDropdown"
-          class="dropdown">
+      <!-- CARD -->
+      <div
+        class="bg-[#111111] border border-yellow-400/10 rounded-[36px] p-6 shadow-[0_10px_40px_rgba(255,204,0,0.08)]"
+      >
+
+        <!-- LOGO -->
+        <div class="flex justify-center">
+
+          <div
+            class="w-24 h-24 rounded-[28px] bg-yellow-400 flex items-center justify-center shadow-[0_10px_30px_rgba(250,204,21,0.35)]"
+          >
+
+            <img
+              src="imgs/Asset 4.svg"
+              class="w-14"
+            />
+
+          </div>
+
         </div>
+
+        <!-- TITLE -->
+        <div class="text-center mt-7">
+
+          <p class="text-yellow-400 text-sm font-semibold uppercase tracking-wide">
+            New Choice E-Bikes
+          </p>
+
+          <h1 class="text-4xl font-extrabold mt-3">
+            Commission
+            Calculator
+          </h1>
+
+        </div>
+
+        <!-- PRODUCT -->
+        <div class="mt-8">
+
+          <label class="text-sm text-gray-300 font-medium">
+            Search Product
+          </label>
+
+          <div class="relative mt-2">
+
+            <input
+              type="text"
+              id="product"
+              placeholder="Search product..."
+              autocomplete="off"
+              class="w-full h-14 rounded-2xl bg-[#1a1a1a] border border-yellow-400/10 px-5 outline-none focus:border-yellow-400 text-white"
+            />
+
+            <div
+              id="productDropdown"
+              class="absolute left-0 right-0 top-16 bg-[#1a1a1a] border border-yellow-400/10 rounded-2xl overflow-hidden hidden z-50"
+            ></div>
+
+          </div>
+
+          <small
+            id="productError"
+            class="text-red-400 text-sm mt-2 block"
+          ></small>
+
+        </div>
+
+        <!-- PAYMENT -->
+        <div class="mt-6">
+
+          <label class="text-sm text-gray-300 font-medium">
+            Mode of Payment
+          </label>
+
+          <select
+            id="payment"
+            class="w-full h-14 rounded-2xl bg-[#1a1a1a] border border-yellow-400/10 px-5 mt-2 outline-none focus:border-yellow-400 text-white"
+          >
+
+            <option value="">
+              Choose Payment Mode
+            </option>
+
+            <option value="Cash">
+              Cash
+            </option>
+
+            <option value="Card Transaction">
+              Card Transaction
+            </option>
+
+            <option value="Financing">
+              Financing
+            </option>
+
+          </select>
+
+        </div>
+
+        <!-- ADDONS -->
+        <div class="mt-6">
+
+          <div class="flex items-center justify-between">
+
+            <label class="text-sm text-gray-300 font-medium">
+              Add-ons
+            </label>
+
+            <button
+              type="button"
+              id="addAddonBtn"
+              class="text-yellow-400 font-semibold text-sm"
+            >
+              + Add Add-on
+            </button>
+
+          </div>
+
+          <div
+            id="addonContainer"
+            class="mt-4 space-y-3"
+          ></div>
+
+        </div>
+
+        <!-- PRICE BOXES -->
+        <div class="grid grid-cols-2 gap-4 mt-7">
+
+          <!-- SELLING -->
+          <div
+            class="bg-[#1a1a1a] border border-yellow-400/10 rounded-3xl p-5"
+          >
+
+            <p class="text-xs text-gray-400">
+              Selling Price
+            </p>
+
+            <h2
+              id="price"
+              class="text-2xl font-extrabold text-yellow-400 mt-2"
+            >
+              ₱0.00
+            </h2>
+
+          </div>
+
+          <!-- THRESHOLD -->
+          <div
+            class="bg-[#1a1a1a] border border-yellow-400/10 rounded-3xl p-5"
+          >
+
+            <p class="text-xs text-gray-400">
+              Minimum Selling Price
+            </p>
+
+            <h2
+              id="discountThreshold"
+              class="text-2xl font-extrabold text-yellow-400 mt-2"
+            >
+              ₱0.00
+            </h2>
+
+          </div>
+
+        </div>
+
+        <!-- SOLD PRICE -->
+        <div class="mt-6">
+
+          <label class="text-sm text-gray-300 font-medium">
+            Sold Price
+          </label>
+
+          <input
+            type="text"
+            id="sold_price"
+            placeholder="Enter sold price"
+            class="w-full h-14 rounded-2xl bg-[#1a1a1a] border border-yellow-400/10 px-5 mt-2 outline-none focus:border-yellow-400 text-white"
+          />
+
+          <small
+            id="priceError"
+            class="text-red-400 text-sm mt-2 block"
+          ></small>
+
+        </div>
+
+        <!-- BUTTON -->
+        <button
+          id="computeBtn"
+          class="w-full h-16 rounded-2xl bg-yellow-400 text-black font-extrabold text-[16px] mt-8 shadow-[0_10px_25px_rgba(250,204,21,0.35)] active:scale-[0.98] transition"
+        >
+
+          Compute Commission
+
+        </button>
 
       </div>
 
-    </div>
+      <!-- RESULT -->
+      <div
+        class="bg-[#111111] border border-yellow-400/10 rounded-[36px] p-6 mt-6 shadow-[0_10px_40px_rgba(255,204,0,0.08)]"
+      >
 
-    <!-- Payment Mode -->
-    <div class="form-group">
-      <label for="payment">Mode of Payment</label>
+        <h2 class="text-2xl font-extrabold mb-6">
+          Result
+        </h2>
 
-      <select id="payment">
-        <option value="">Choose Payment Mode</option>
-        <option value="Cash">Cash</option>
-        <option value="Card Transaction">Card Transaction</option>
-        <option value="Financing">Financing</option>
-      </select>
-    </div>
+        <div class="space-y-4">
 
-    <div class="form-group">
+          <div class="flex justify-between">
+            <span class="text-gray-400">
+              Unit
+            </span>
 
-      <label>Add-ons</label>
+            <span id="productName" class="font-semibold text-right"></span>
+          </div>
 
-      <button
-        type="button"
-        id="addAddonBtn"
-        class="addon-btn">
-        + Add-on
-      </button>
+          <div class="flex justify-between">
+            <span class="text-gray-400">
+              Add On/s
+            </span>
 
-      <div id="addonContainer"></div>
+            <span id="addOnSpan" class="font-semibold text-right"></span>
+          </div>
 
-    </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">
+              Selling Price
+            </span>
 
-    <!-- PRICE ROW -->
-    <div class="price-row">
+            <span id="sellingPriceSpan" class="font-semibold"></span>
+          </div>
 
-      <!-- Selling Price -->
-      <div class="price-box">
+          <div class="flex justify-between">
+            <span class="text-gray-400">
+              Sold Price
+            </span>
 
-        <label>Selling Price</label>
+            <span id="soldPriceSpan" class="font-semibold"></span>
+          </div>
 
+          <div class="flex justify-between">
+            <span class="text-gray-400">
+              GP
+            </span>
+
+            <span id="grossProfit" class="font-semibold"></span>
+          </div>
+
+          <div class="flex justify-between">
+            <span class="text-gray-400">
+              Commission Rate
+            </span>
+
+            <span id="commissionRate" class="font-semibold"></span>
+          </div>
+
+        </div>
+
+        <!-- TOTAL -->
         <div
-          id="price"
-          class="price-text">
-          ₱0.00
+          class="mt-7 bg-yellow-400 rounded-3xl p-6 text-black"
+        >
+
+          <p class="text-sm font-semibold opacity-70">
+            Total Commission
+          </p>
+
+          <h1
+            id="commission"
+            class="text-4xl font-extrabold mt-2"
+          >
+            ₱0.00
+          </h1>
+
         </div>
 
       </div>
-
-      <!-- Discount Threshold -->
-      <div class="price-box">
-
-        <label>Minimum Selling Price</label>
-
-        <div
-          id="discountThreshold"
-          class="price-text">
-          ₱0.00
-        </div>
-
-      </div>
-
-    </div>
-
-        <!-- Sold Price -->
-    <div class="form-group">
-      <label for="sold_price">Sold Price</label>
-
-      <input
-        type="text"
-        id="sold_price"
-        placeholder="Enter sold price"
-      />
-      <small
-        id="priceError"
-        class="error-message">
-      </small>
-    </div>
-
-
-    <!-- Button -->
-    <button id="computeBtn">
-      Compute Commission
-    </button>
-
-    <!-- Result -->
-    <div class="result">
-      <p><strong>Unit:</strong> <span id="productName"></span></p>
-      <p><strong>Add On/s:</strong> <span id="addOnSpan"></span></p>
-      <p><strong>Selling Price:</strong> <span id="sellingPriceSpan"></span></p>
-      <p><strong>Sold Price:</strong> <span id="soldPriceSpan"></span></p>
-      <p><strong>GP:</strong> <span id="grossProfit"></span></p>
-      <p><strong>Commission Rate:</strong> <span id="commissionRate"></span></p>
-      <p><strong>Total Commission:</strong> <span id="commission">₱0.00</span></p>
 
     </div>
 

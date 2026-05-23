@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8" />
 
   <meta
@@ -8,42 +9,139 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>New Choice E-Bikes</title>
+  <title>
+    New Choice E-Bikes
+  </title>
+
+  <!-- TAILWIND -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FONT -->
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
 
   <link
-    rel="stylesheet"
-    href="styles.css"
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
   />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+
+    body{
+      font-family:"Inter",sans-serif;
+    }
+
+  </style>
+
 </head>
 
-<body>
+<body class="bg-black min-h-screen overflow-hidden text-white">
 
-  <div class="home-container">
+  <!-- BACKGROUND GLOW -->
+  <div class="absolute inset-0 overflow-hidden">
 
-    <!-- LOGO -->
-    <img
-      src="imgs/Asset 4.svg"
-      class="logo"
-    />
+    <div
+      class="absolute -top-32 -right-32 w-96 h-96 bg-yellow-400/20 rounded-full blur-3xl"
+    ></div>
 
-    <h1>
-      Commission System
-    </h1>
+    <div
+      class="absolute bottom-0 -left-20 w-80 h-80 bg-yellow-500/10 rounded-full blur-3xl"
+    ></div>
 
-    <!-- BUTTONS -->
-    <a
-      href="calculator.html"
-      class="home-btn"
-    >
-      Calculate Commission
-    </a>
+  </div>
 
-    <a
-      href="login.html"
-      class="home-btn dark"
-    >
-      View My Commissions
-    </a>
+  <!-- MAIN -->
+  <div class="relative z-10 min-h-screen flex items-center justify-center px-6">
+
+    <div class="w-full max-w-md">
+
+      <!-- CARD -->
+      <div
+        class="bg-[#111111] border border-yellow-400/20 rounded-[36px] p-8 shadow-[0_10px_40px_rgba(255,204,0,0.08)] backdrop-blur-xl"
+      >
+
+        <!-- LOGO -->
+        <div class="flex justify-center">
+
+          <div
+            class="w-24 h-24 rounded-[28px] bg-yellow-400 flex items-center justify-center shadow-[0_10px_30px_rgba(250,204,21,0.35)]"
+          >
+
+            <img
+              src="imgs/Asset 4.svg"
+              class="w-14"
+            />
+
+          </div>
+
+        </div>
+
+        <!-- TEXT -->
+        <div class="text-center mt-8">
+
+          <p class="text-yellow-400 text-sm font-semibold tracking-wide uppercase">
+            Welcome to
+          </p>
+
+          <h1
+            class="text-4xl font-extrabold mt-3 leading-tight"
+          >
+            New Choice
+            <br />
+            E-Bikes
+          </h1>
+
+          <p
+            class="text-gray-400 text-sm mt-5 leading-relaxed"
+          >
+            Modern commission management system designed for dealership sales agents.
+          </p>
+
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="mt-10 space-y-4">
+
+          <!-- CALCULATOR -->
+          <a
+            href="calculator.html"
+            class="h-16 rounded-2xl bg-yellow-400 text-black flex items-center justify-center text-[16px] font-extrabold shadow-[0_10px_25px_rgba(250,204,21,0.35)] active:scale-[0.98] transition"
+          >
+
+            Calculate Commission
+
+          </a>
+
+          <!-- LOGIN -->
+          <a
+            href="login.html"
+            class="h-16 rounded-2xl border border-yellow-400/30 bg-[#1a1a1a] text-yellow-400 flex items-center justify-center text-[16px] font-bold active:scale-[0.98] transition hover:bg-yellow-400 hover:text-black"
+          >
+
+            View My Commissions
+
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <p
+        class="text-center text-gray-500 text-xs mt-6"
+      >
+        © 2026 New Choice E-Bikes
+      </p>
+
+    </div>
 
   </div>
 
