@@ -26,6 +26,8 @@ const loadingScreen =
     "loadingScreen"
   );
 
+
+
 const discountThreshold =
   document.getElementById("discountThreshold");
 
@@ -179,9 +181,8 @@ function addAddonSelect() {
   const row =
     document.createElement("div");
 
-  row.classList.add(
-    "addon-row"
-  );
+  row.className =
+    "addon-row flex items-center gap-3";
 
   // SELECT
   const select =
@@ -189,9 +190,8 @@ function addAddonSelect() {
       "select"
     );
 
-  select.classList.add(
-    "addon-select"
-  );
+  select.className =
+    "addon-select flex-1 h-14 rounded-2xl bg-[#1a1a1a] border border-yellow-400/10 px-5 text-white outline-none";
 
   select.innerHTML =
     `<option value="">
@@ -226,9 +226,8 @@ function addAddonSelect() {
 
   deleteBtn.innerText = "✕";
 
-  deleteBtn.classList.add(
-    "delete-addon-btn"
-  );
+deleteBtn.className =
+  "delete-addon-btn w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-2xl font-bold flex items-center justify-center shrink-0 active:scale-95 transition";
 
   deleteBtn.addEventListener(
     "click",
@@ -929,5 +928,6 @@ document
           maximumFractionDigits:2
         }
       )}`;
+
 
 });
